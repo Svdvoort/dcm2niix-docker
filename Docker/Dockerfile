@@ -1,37 +1,37 @@
-FROM alpine:3.15
+FROM alpine:3.19.1
 
 ARG VERSION
 
 RUN apk add --no-cache \
-    libstdc++=10.3.1_git20211027-r0 \
-    libjpeg-turbo-dev=2.1.2-r0
+    libstdc++\
+    libjpeg-turbo-dev
 
 RUN apk add --no-cache --virtual builddeps\
-    ca-certificates=20220614-r0	\
-    cmake=3.21.3-r0	\
-    g++=10.3.1_git20211027-r0 \
-    gcc=10.3.1_git20211027-r0 \
-    git=2.34.4-r0 \
-    make=4.3-r0 \
-    wget=1.21.2-r2 \
-    pigz=2.6-r0 \
+    ca-certificates	\
+    cmake	\
+    g++ \
+    gcc \
+    git \
+    make \
+    wget \
+    pigz \
     && wget -q https://github.com/rordenlab/dcm2niix/archive/refs/tags/v$VERSION.tar.gz \
     && tar -xzf v$VERSION.tar.gz \
     && mkdir  /dcm2niix-$VERSION/build/ \
     && cd /dcm2niix-$VERSION/build/ \
     && cmake -DBATCH_VERSION=OFF \
-          -DBUILD_DOCS=OFF \
-          -DCMAKE_BUILD_TYPE=Release \
-          -DCMAKE_INSTALL_PREFIX=/usr/local/ \
-          -DINSTALL_DEPENDENCIES=OFF \
-          -DUSE_GIT_PROTOCOL=OFF \
-          -DUSE_JASPER=OFF \
-          -DUSE_JPEGLS=ON \
-          -DUSE_OPENJPEG=ON \
-          -DUSE_STATIC_RUNTIME=ON \
-          -DUSE_TURBOJPEG=ON \
-          -DZLIB_IMPLEMENTATION=Cloudflare \
-           .. \
+    -DBUILD_DOCS=OFF \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr/local/ \
+    -DINSTALL_DEPENDENCIES=OFF \
+    -DUSE_GIT_PROTOCOL=OFF \
+    -DUSE_JASPER=OFF \
+    -DUSE_JPEGLS=ON \
+    -DUSE_OPENJPEG=ON \
+    -DUSE_STATIC_RUNTIME=ON \
+    -DUSE_TURBOJPEG=ON \
+    -DZLIB_IMPLEMENTATION=Cloudflare \
+    .. \
     && make \
     && make install \
     && cd / \
